@@ -25,6 +25,42 @@
       "root": "",
       "sourceRoot": "<%= MAIN_SRC_DIR.replace(/\/$/, "") %>",
       "projectType": "application",
+      "architect": {
+        "build": {
+          "builder": "@angular-builders/custom-webpack:browser",
+          "options": {
+            "customWebpackConfig": {
+              "path": "./webpack/webpack.custom.js"
+            },
+            "outputPath": "dist/example-ng-app",
+            "index": "src/main/webapp/index.html",
+            "main": "src/main/webapp/app/app.main.ts",
+            "polyfills": "src/main/webapp/app/polyfills.ts",
+            "tsConfig": "tsconfig.json",
+            "aot": false,
+            "assets": [
+              "src/main/webapp/content",
+              "src/main/webapp/favicon.ico",
+              { "glob": "{css,lib}/*", "input": "./node_modules/swagger-ui/dist", "output": "swagger-ui/dist" },
+              {
+                "glob": "swagger-ui.min.js",
+                "input": "./node_modules/swagger-ui/dist/",
+                "output": "swagger-ui/dist/"
+              },
+              { "glob": "**/*", "input": "./src/main/webapp/swagger-ui/", "output": "swagger-ui" }
+            ],
+            "styles": ["src/main/webapp/content/scss/global.scss", "src/main/webapp/content/scss/vendor.scss"],
+            "scripts": []
+          }
+        },
+        "serve": {
+          "builder": "@angular-builders/custom-webpack:dev-server",
+          "options": {
+            "browserTarget": "jhipster:build",
+            "proxyConfig": "./webpack/proxy.conf.js"
+          }
+        }
+      },
       "schematics": {
         "@schematics/angular:component": {
           "skipTests": true,
