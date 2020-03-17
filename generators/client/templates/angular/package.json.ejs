@@ -63,12 +63,12 @@
     "zone.js": "0.10.2"
   },
   "devDependencies": {
+    "@angular-builders/custom-webpack": "9.0.0",
+    "@angular-devkit/build-angular": "0.900.6",
     "@angular/cli": "9.0.4",
     "@angular/compiler-cli": "9.0.4",
     "@ngtools/webpack": "9.0.4",
     "@openapitools/openapi-generator-cli": "1.0.10-4.2.3",
-    "@angular-builders/custom-webpack": "^8.2.0",
-    "@angular-devkit/build-angular": "^0.803.3",
     <%_ if (protractorTests) { _%>
     "@types/chai": "4.2.7",
     "@types/chai-string": "1.4.2",
@@ -172,14 +172,13 @@
     "prettier:format": "prettier --write \"{,src/**/}*.{md,json,ts,css,scss,yml}\"",
     "lint": "eslint . --ext .js,.ts",
     "lint:fix": "<%= clientPackageManager %> run lint <%= optionsForwarder %>--fix",
-    "ngc": "ngc -p tsconfig.app.json",
     "cleanup": "rimraf <%= DIST_DIR %> <%= AOT_DIR %>",
     "clean-www": "rimraf <%= DIST_DIR %>app/{src,<%= BUILD_DIR %>}",
     <%_ if (protractorTests) { _%>
     "e2e": "protractor <%= TEST_SRC_DIR %>protractor.conf.js",
     "postinstall": "node node_modules/protractor/bin/webdriver-manager update --gecko false",
     <%_ } _%>
-    "start": "<%= clientPackageManager %> run webpack:dev",
+    "start": "ng serve",
     <%_ if (skipServer) { _%>
     "sonar": "sonar-scanner",
     <%_ } _%>
@@ -188,15 +187,12 @@
     "build": "<%= clientPackageManager %> run webpack:prod",
     "test": "<%= clientPackageManager %> run lint && jest --coverage --logHeapUsage -w=2 --config src/test/javascript/jest.conf.js",
     "test:watch": "<%= clientPackageManager %> run test <%= optionsForwarder %>--watch",
-    "webpack:dev": "<%= clientPackageManager %> run webpack-dev-server <%= optionsForwarder %>--config webpack/webpack.dev.js --inline --hot --port=9060 --watch-content-base --env.stats=minimal",
-    "webpack:dev-verbose": "<%= clientPackageManager %> run webpack-dev-server <%= optionsForwarder %>--config webpack/webpack.dev.js --inline --hot --port=9060 --watch-content-base --profile --progress --env.stats=normal",
-    "webpack:build:main": "<%= clientPackageManager %> run webpack <%= optionsForwarder %>--config webpack/webpack.dev.js --env.stats=minimal",
+    "webpack:dev-verbose": "ng serve --verbose",
+    "webpack:build:main": "ng build",
     "webpack:build": "<%= clientPackageManager %> run cleanup && <%= clientPackageManager %> run webpack:build:main",
-    "webpack:prod:main": "<%= clientPackageManager %> run webpack <%= optionsForwarder %>--config webpack/webpack.prod.js --profile",
+    "webpack:prod:main": "ng build --prod",
     "webpack:prod": "<%= clientPackageManager %> run cleanup && <%= clientPackageManager %> run webpack:prod:main && <%= clientPackageManager %> run clean-www",
-    "webpack:test": "<%= clientPackageManager %> run test",
-    "webpack-dev-server": "node --max_old_space_size=4096 node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "webpack": "node --max_old_space_size=4096 node_modules/webpack/bin/webpack.js"
+    "webpack:test": "<%= clientPackageManager %> run test"
   },
   "jestSonar": {
     "reportPath": "<%= BUILD_DIR %>test-results/jest",
