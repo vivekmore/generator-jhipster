@@ -133,33 +133,17 @@ function rewrite(args) {
     return args.haystack;
   }
 
-  const lines = args.haystack.split('\n');
-
-  let otherwiseLineIndex = -1;
-  lines.forEach((line, i) => {
-    if (line.includes(args.needle)) {
-      otherwiseLineIndex = i;
-    }
-  });
-
-  if (otherwiseLineIndex === -1) {
+  const lines = args.haystack.split(/\r?\n/);
+  const lastIndexOfNeedle = _.lastIndexOf(lines, args.needle);
+  if (lastIndexOfNeedle === -1) {
     console.warn(`Needle ${args.needle} not found at file ${args.file}`);
     return args.haystack;
   }
 
-  let spaces = 0;
-  while (lines[otherwiseLineIndex].charAt(spaces) === ' ') {
-    spaces += 1;
-  }
-
-  let spaceStr = '';
-
-  // eslint-disable-next-line no-cond-assign
-  while ((spaces -= 1) >= 0) {
-    spaceStr += ' ';
-  }
-
-  lines.splice(otherwiseLineIndex, 0, args.splicable.map(line => spaceStr + line).join('\n'));
+  const leadingSpaces = lines[lastIndexOfNeedle].search(/\S|$/);
+  const indentation = _.repeat(' ', leadingSpaces);
+  const indentedContent = args.splicable.map(line => indentation + line).join('\n');
+  lines.splice(lastIndexOfNeedle, 0, indentedContent);
 
   return lines.join('\n');
 }
@@ -560,6 +544,7 @@ function getEnums(enums, customValuesState) {
 function doesTheEnumValueHaveACustomValue(enumValue) {
   return enumValue.includes('(');
 }
+
 /**
  * Copy object props from source to destination
  * @param {*} toObj

@@ -326,4 +326,10 @@ describe('JHipster Utils', () => {
       );
     });
   });
+    describe('::rewrite', () => {
+        it('returns args.haystack if splicable content already exists', () => {
+        });
+        it('rewrites splicable where needle exists', () => {
+        });
+    });
 });
