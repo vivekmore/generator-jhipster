@@ -57,7 +57,7 @@
         "jdl:test": "mocha test/jdl --no-insight --forbid-only -p"
     },
     "dependencies": {
-        "aws-sdk": "2.749.0",
+        "aws-sdk": "2.751.0",
         "axios": "0.20.0",
         "chalk": "4.1.0",
         "chevrotain": "7.0.2",
