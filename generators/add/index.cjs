@@ -34,9 +34,6 @@ module.exports = class extends BaseBlueprintGenerator {
       required: false,
       description: 'Generators to regenerate',
     });
-
-    // eslint-disable-next-line no-useless-return
-    if (this.options.help) return;
   }
 
   async _beforeQueue() {
